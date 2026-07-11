@@ -1,0 +1,7 @@
+/home/onu/dev/sbtb/build/CMakeFiles/sbtb.dir
+/home/onu/dev/sbtb/build/CMakeFiles/edit_cache.dir
+/home/onu/dev/sbtb/build/CMakeFiles/rebuild_cache.dir
+/home/onu/dev/sbtb/build/CMakeFiles/list_install_components.dir
+/home/onu/dev/sbtb/build/CMakeFiles/install.dir
+/home/onu/dev/sbtb/build/CMakeFiles/install/local.dir
+/home/onu/dev/sbtb/build/CMakeFiles/install/strip.dir

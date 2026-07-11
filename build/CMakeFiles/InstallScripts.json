@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/onu/dev/sbtb/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
