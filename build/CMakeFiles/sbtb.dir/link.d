@@ -6,6 +6,7 @@ bin/sbtb: \
   /usr/lib/libX11.so \
   /usr/lib/libXinerama.so \
   /usr/lib/libXcomposite.so \
+  /usr/lib/libXrandr.so \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libXft.so \
   /usr/lib/libGL.so \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc.a \
@@ -30,9 +31,9 @@ bin/sbtb: \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/crtn.o \
   /lib64/libxcb.so.1 \
   /lib64/libXext.so.6 \
+  /lib64/libXrender.so.1 \
   /lib64/libfontconfig.so.1 \
   /lib64/libfreetype.so.6 \
-  /lib64/libXrender.so.1 \
   /lib64/libGLdispatch.so.0 \
   /lib64/libGLX.so.0 \
   /usr/lib64/ld-linux-x86-64.so.2 \
@@ -59,6 +60,8 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 /usr/lib/libXinerama.so:
 
 /usr/lib/libXcomposite.so:
+
+/usr/lib/libXrandr.so:
 
 /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libXft.so:
 
@@ -108,11 +111,11 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /lib64/libXext.so.6:
 
+/lib64/libXrender.so.1:
+
 /lib64/libfontconfig.so.1:
 
 /lib64/libfreetype.so.6:
-
-/lib64/libXrender.so.1:
 
 /lib64/libGLdispatch.so.0:
 

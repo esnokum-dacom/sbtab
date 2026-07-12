@@ -57,7 +57,10 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o: /home/onu/dev/sbtb/src/sbtb.c \
  /usr/include/X11/Xlib.h /usr/include/X11/Xfuncproto.h \
  /usr/include/X11/Xosdefs.h /usr/include/X11/Xatom.h \
  /usr/include/X11/XKBlib.h /usr/include/X11/extensions/XKBstr.h \
- /usr/include/X11/extensions/XKB.h /usr/include/X11/extensions/Xinerama.h \
+ /usr/include/X11/extensions/XKB.h /usr/include/X11/extensions/Xrandr.h \
+ /usr/include/X11/extensions/randr.h \
+ /usr/include/X11/extensions/Xrender.h /usr/include/X11/Xutil.h \
+ /usr/include/X11/extensions/render.h /usr/include/X11/Xdefs.h \
  /usr/include/X11/extensions/Xcomposite.h \
  /usr/include/X11/extensions/composite.h \
  /usr/include/X11/extensions/xfixeswire.h \
@@ -86,8 +89,6 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o: /home/onu/dev/sbtb/src/sbtb.c \
  /usr/include/freetype2/freetype/ftmoderr.h \
  /usr/include/freetype2/freetype/fterrdef.h \
  /usr/include/fontconfig/fontconfig.h /usr/include/sys/stat.h \
- /usr/include/X11/extensions/Xrender.h /usr/include/X11/Xutil.h \
- /usr/include/X11/extensions/render.h /usr/include/X11/Xdefs.h \
  /usr/include/X11/Xft/XftCompat.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/bits/sched.h \
  /usr/include/bits/types/struct_sched_param.h /usr/include/bits/cpu-set.h \

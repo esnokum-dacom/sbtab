@@ -10,9 +10,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_compile_options(-O -Wall -Wextra -pedantic -Wold-style-declaration -Wmissing-prototypes -Wno-unused-parameter)
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(XFT REQUIRED xft)
-
 find_library(X11_LIB X11 REQUIRED)
+find_package(X11 REQUIRED)
+find_library(XRANDR_LIB Xrandr REQUIRED)
 find_library(XINERAMA_LIB Xinerama REQUIRED)
 find_library(XCOMPOSITE_LIB Xcomposite REQUIRED)
 find_library(GL_LIB GL REQUIRED)
@@ -29,6 +29,7 @@ target_link_libraries(sbtb
     ${X11_LIB}
     ${XINERAMA_LIB}
     ${XCOMPOSITE_LIB}
+    ${XRANDR_LIB}
     ${XFT_LIBRARIES}
     ${GL_LIB}
     Threads::Threads

@@ -60,8 +60,6 @@ static int xerror(Display *d, XErrorEvent *e) {
     return 0;
 }
 
-/* ---- single instance lock ---- */
-
 static int lockfd = -1;
 static char lockpath[256];
 static Client *g_client = NULL;
@@ -87,9 +85,6 @@ static void handle_term(int sig) {
         g_client->running = 0;
 }
 
-/* Acquire an exclusive lock on the lockfile. If another sbtb instance
- * already holds it, ask it to exit (SIGTERM, then SIGKILL if it doesn't
- * go away within ~1s) and take the lock once it's released. */
 static void ensure_single_instance(void) {
     get_lock_path(lockpath, sizeof(lockpath));
 
@@ -99,7 +94,7 @@ static void ensure_single_instance(void) {
             die("cannot open lock file");
 
         if (flock(lockfd, LOCK_EX | LOCK_NB) == 0)
-            break; /* got it */
+            break;
 
         if (errno != EWOULDBLOCK)
             die("flock failed");
@@ -111,10 +106,9 @@ static void ensure_single_instance(void) {
 
         if (pid > 0) {
             kill(pid, SIGTERM);
-            for (int i = 0; i < 100; i++) { /* wait up to ~1s */
+            for (int i = 0; i < 100; i++) {
                 if (kill(pid, 0) != 0)
                     break;
-                usleep(10000);
             }
             if (kill(pid, 0) == 0)
                 kill(pid, SIGKILL);
@@ -122,8 +116,6 @@ static void ensure_single_instance(void) {
 
         close(lockfd);
         lockfd = -1;
-        /* fd closed -> kernel released our view of the lock; loop and
-         * retry now that the old instance is (or should be) gone */
     }
 
     if (ftruncate(lockfd, 0) != 0)
@@ -200,23 +192,35 @@ void initx(Client *c) {
         None
     };
 
-    if (XineramaIsActive(c->d)) {
-        int n;
-        XineramaScreenInfo *info = XineramaQueryScreens(c->d, &n);
-        Window dw;
-        int di;
-        unsigned int du;
-        int cx, cy;
-        XQueryPointer(c->d, c->root, &dw, &dw, &cx, &cy, &di, &di, &du);
-        for (int i = 0; i < n; i++) {
-            if (cx >= info[i].x_org && cx < info[i].x_org + info[i].width &&
-                cy >= info[i].y_org && cy < info[i].y_org + info[i].height) {
-                mw = info[i].width;
-                mh = info[i].height;
-                break;
+    int mx = 0, my = 0;
+    c->mon = 0;
+
+    int rr_event_base, rr_error_base;
+    if (XRRQueryExtension(c->d, &rr_event_base, &rr_error_base)) {
+        int rr_major, rr_minor;
+        XRRQueryVersion(c->d, &rr_major, &rr_minor);
+
+        int nmon = 0;
+        XRRMonitorInfo *info = XRRGetMonitors(c->d, c->root, True, &nmon);
+        if (info) {
+            Window dw;
+            int di;
+            unsigned int du;
+            int cx, cy;
+            XQueryPointer(c->d, c->root, &dw, &dw, &cx, &cy, &di, &di, &du);
+            for (int i = 0; i < nmon; i++) {
+                if (cx >= info[i].x && cx < info[i].x + info[i].width &&
+                    cy >= info[i].y && cy < info[i].y + info[i].height) {
+                    mw = info[i].width;
+                    mh = info[i].height;
+                    mx = info[i].x;
+                    my = info[i].y;
+                    c->mon = i;
+                    break;
+                }
             }
+            XRRFreeMonitors(info);
         }
-        XFree(info);
     }
 
     c->vi = glXChooseVisual(c->d, c->scr, glattr);
@@ -233,7 +237,7 @@ void initx(Client *c) {
     c->attrs.bit_gravity = StaticGravity;
     c->attrs.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask;
 
-    c->w = XCreateWindow(c->d, c->root, 0 + (mw - c->width) / 2, 0 + (mh - c->height) / 2, c->width, c->height, 0, c->vi->depth,
+    c->w = XCreateWindow(c->d, c->root, mx + (mw - c->width) / 2, my + (mh - c->height) / 2, c->width, c->height, 0, c->vi->depth,
                       InputOutput, c->vis,
                       CWOverrideRedirect | CWColormap | CWBackPixmap | CWBorderPixel | CWBitGravity | CWEventMask, &c->attrs);
 
@@ -512,6 +516,24 @@ static void get_class(Display *d, Window w, char *buf, size_t bufsz) {
     }
 }
 
+static int get_win_monitor(Display *d, Window w) {
+    Atom prop = XInternAtom(d, "_SBCWM_MONITOR", False);
+    Atom type;
+    int fmt;
+    unsigned long n, rem;
+    unsigned char *data = NULL;
+
+    if (XGetWindowProperty(d, w, prop, 0, 1, False, XA_CARDINAL,
+        &type, &fmt, &n, &rem, &data) != Success || type != XA_CARDINAL || !data) {
+        if (data) XFree(data);
+        return -1;
+    }
+
+    int mon = (int)(*(unsigned long *)data);
+    XFree(data);
+    return mon;
+}
+
 static unsigned char *capture_thumb(Client *c, Window w, int *out_w, int *out_h, int *src_w, int *src_h) {
     XWindowAttributes wa;
     if (!XGetWindowAttributes(c->d, w, &wa) || wa.map_state != IsViewable)
@@ -590,6 +612,10 @@ static void *loader_main(void *arg) {
     item_count = 0;
 
     for (int i = 0; i < n; i++) {
+        int wmon = get_win_monitor(ld, wins[i]);
+        if (wmon != -1 && wmon != c->mon)
+            continue;
+
         int w, h, sw, sh;
         unsigned char *px = capture_thumb(&lc, wins[i], &w, &h, &sw, &sh);
         if (!px) {
@@ -806,7 +832,7 @@ void run(Client *c) {
             break;
 
         if (loader_done && !dirty) {
-            struct timeval tv = { 0, 50000 }; /* 50ms: keeps SIGTERM responsive */
+            struct timeval tv = { 0, 50000 }; 
             fd_set fds;
             FD_ZERO(&fds);
             FD_SET(ConnectionNumber(c->d), &fds);

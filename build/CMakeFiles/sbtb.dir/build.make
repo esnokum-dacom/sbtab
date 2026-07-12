@@ -99,6 +99,7 @@ bin/sbtb: CMakeFiles/sbtb.dir/compiler_depend.ts
 bin/sbtb: /usr/lib/libX11.so
 bin/sbtb: /usr/lib/libXinerama.so
 bin/sbtb: /usr/lib/libXcomposite.so
+bin/sbtb: /usr/lib/libXrandr.so
 bin/sbtb: /usr/lib/libGL.so
 bin/sbtb: CMakeFiles/sbtb.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/onu/dev/sbtb/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable bin/sbtb"

@@ -2,7 +2,7 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 
-#define THUMB_MAX 200
+#define THUMB_MAX 300
 
 #define TITLE 1
 #define CLASS 1

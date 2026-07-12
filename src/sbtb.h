@@ -3,7 +3,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/XKBlib.h>
-#include <X11/extensions/Xinerama.h>
+#include <X11/extensions/Xrandr.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/Xft/Xft.h>
 #include <pthread.h>
@@ -44,6 +44,7 @@ struct Client {
     XftFont *font;
     XftColor xftcolor;
     int running;
+    int mon;
 };
 
 typedef struct {
@@ -86,6 +87,7 @@ static int items_page(Client *c);
 static Window *get_clients(Display *d, Window root, int *count);
 static void get_title(Display *d, Window w, char *buf, size_t bufsz);
 static void get_class(Display *d, Window w, char *buf, size_t bufsz);
+static int get_win_monitor(Display *d, Window w);
 static unsigned char *capture_thumb(Client *c, Window w, int *out_w, int *out_h, int *src_w, int *src_h);
 void load_clients_async(Client *c);
 void draw_windows(Client *c);

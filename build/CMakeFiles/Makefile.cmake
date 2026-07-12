@@ -18,15 +18,19 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake"
   "/usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake"
   "/usr/share/cmake-4.2/Modules/CheckCSourceCompiles.cmake"
+  "/usr/share/cmake-4.2/Modules/CheckFunctionExists.cmake"
   "/usr/share/cmake-4.2/Modules/CheckIncludeFile.cmake"
   "/usr/share/cmake-4.2/Modules/CheckLibraryExists.cmake"
   "/usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/usr/share/cmake-4.2/Modules/Compiler/GNU-C.cmake"
   "/usr/share/cmake-4.2/Modules/Compiler/GNU.cmake"
+  "/usr/share/cmake-4.2/Modules/FindFontconfig.cmake"
+  "/usr/share/cmake-4.2/Modules/FindFreetype.cmake"
   "/usr/share/cmake-4.2/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-4.2/Modules/FindPackageMessage.cmake"
   "/usr/share/cmake-4.2/Modules/FindPkgConfig.cmake"
   "/usr/share/cmake-4.2/Modules/FindThreads.cmake"
+  "/usr/share/cmake-4.2/Modules/FindX11.cmake"
   "/usr/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake"
   "/usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake"
   "/usr/share/cmake-4.2/Modules/Internal/CheckSourceCompiles.cmake"
@@ -40,6 +44,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-4.2/Modules/Platform/Linux-Initialize.cmake"
   "/usr/share/cmake-4.2/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-4.2/Modules/Platform/UnixPaths.cmake"
+  "/usr/share/cmake-4.2/Modules/SelectLibraryConfigurations.cmake"
   )
 
 # The corresponding makefile is:
