@@ -463,10 +463,10 @@ X11_xcb_dri3_INCLUDE_PATH:PATH=/usr/include
 X11_xcb_dri3_LIB:FILEPATH=/usr/lib/libxcb-dri3.so
 
 //Path to a file.
-X11_xcb_errors_INCLUDE_PATH:PATH=X11_xcb_errors_INCLUDE_PATH-NOTFOUND
+X11_xcb_errors_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_xcb_errors_LIB:FILEPATH=X11_xcb_errors_LIB-NOTFOUND
+X11_xcb_errors_LIB:FILEPATH=/usr/lib/libxcb-errors.so
 
 //Path to a file.
 X11_xcb_ewmh_INCLUDE_PATH:PATH=/usr/include

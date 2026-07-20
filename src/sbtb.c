@@ -743,16 +743,34 @@ static void draw_highlight(int x, int y, int w, int h) {
     glEnable(GL_TEXTURE_2D);
 }
 
-void draw_text(Client *c, GLuint *ut, const char *msg, int *w, int *h) {
+void draw_text(Client *c, GLuint *ut, const char *msg, int *w, int *h, size_t max_chars) {
     if (*ut) glDeleteTextures(1, ut);
+    
     XGlyphInfo ext;
-    *ut = make_text_texture(c, msg, &ext);
+    size_t len = strlen(msg);
+    
+    if (max_chars > 0 && len > max_chars) {
+        char buffer[512];
+        
+        if (max_chars > sizeof(buffer) - 4) {
+            max_chars = sizeof(buffer) - 4;
+        }
+        
+        strncpy(buffer, msg, max_chars);
+        strcpy(buffer + max_chars, "...");
+        
+        *ut = make_text_texture(c, buffer, &ext);
+    } else {
+        *ut = make_text_texture(c, msg, &ext);
+    }
 
     if (w) *w = ext.width;
     if (h) *h = ext.height;
 }
 
 void draw_hud(Client *c) {
+    size_t max_c = 35;
+
     char idx[128];
     char geom[128];
 
@@ -761,10 +779,10 @@ void draw_hud(Client *c) {
     snprintf(idx, sizeof(idx), "%d/%d", selected + 1, item_count);
     snprintf(geom, sizeof(geom), "%dx%d", items[selected].src_w, items[selected].src_h);
 
-    draw_text(c, &fis, idx, &fis_w, &fis_h);
-    draw_text(c, &tim, items[selected].title, &tim_w, &tim_h);
-    draw_text(c, &sz, geom, &sz_w, &sz_h);
-    draw_text(c, &fm, items[selected].class, &fm_w, &fm_h);
+    draw_text(c, &fis, idx, &fis_w, &fis_h, max_c);
+    draw_text(c, &tim, items[selected].title, &tim_w, &tim_h, max_c);
+    draw_text(c, &sz, geom, &sz_w, &sz_h, max_c);
+    draw_text(c, &fm, items[selected].class, &fm_w, &fm_h, max_c);
 
     glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -775,10 +793,10 @@ void draw_hud(Client *c) {
         draw_quad(tim, c->width - tim_w - 10, y, tim_w, tim_h);
 
     if (CLASS)
-        draw_quad(fm, (c->width / 2) - (sz_w / 2) + sz_w, c->height - fm_h - 25, fm_w, fm_h);
+        draw_quad(fm, (c->width / 2) - (sz_w / 2) + sz_w - 30, y, fm_w, fm_h);
 
     if (GEOM)
-        draw_quad(sz, (c->width / 2) - (sz_w / 2), y, sz_w, sz_h);
+        draw_quad(sz, (c->width / 2) - (sz_w / 2) - 40, y, sz_w, sz_h);
 }
 
 void run(Client *c) {

@@ -105,7 +105,7 @@ void nav_quit(Client *c);
 void handle_key(Client *c, XKeyEvent *e);
 
 void draw_rect(int x, int y, int w, int h, float r, float g, float b, float a);
-void draw_text(Client *c, GLuint *ut, const char *msg, int *w, int *h);
+void draw_text(Client *c, GLuint *ut, const char *msg, int *w, int *h, size_t max_chars);
 void draw_hud(Client *c);
 
 static void *loader_main(void *arg);
