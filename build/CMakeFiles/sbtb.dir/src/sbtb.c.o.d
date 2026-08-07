@@ -49,7 +49,9 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o: /home/onu/dev/sbtb/src/sbtb.c \
  /usr/include/alloca.h /usr/include/bits/stdlib-bsearch.h \
  /usr/include/bits/stdlib-float.h /usr/include/string.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
- /usr/include/strings.h /usr/include/sys/file.h /usr/include/unistd.h \
+ /usr/include/strings.h /usr/include/sys/file.h /usr/include/time.h \
+ /usr/include/bits/time.h /usr/include/bits/types/struct_tm.h \
+ /usr/include/bits/types/struct_itimerspec.h /usr/include/unistd.h \
  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
  /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
@@ -64,7 +66,8 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o: /home/onu/dev/sbtb/src/sbtb.c \
  /usr/include/X11/extensions/Xcomposite.h \
  /usr/include/X11/extensions/composite.h \
  /usr/include/X11/extensions/xfixeswire.h \
- /usr/include/X11/extensions/Xfixes.h /usr/include/X11/Xft/Xft.h \
+ /usr/include/X11/extensions/Xfixes.h /usr/include/X11/extensions/shape.h \
+ /usr/include/X11/extensions/shapeconst.h /usr/include/X11/Xft/Xft.h \
  /usr/include/freetype2/ft2build.h \
  /usr/include/freetype2/freetype/config/ftheader.h \
  /usr/include/freetype2/freetype/freetype.h \
@@ -92,10 +95,8 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o: /home/onu/dev/sbtb/src/sbtb.c \
  /usr/include/X11/Xft/XftCompat.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/bits/sched.h \
  /usr/include/bits/types/struct_sched_param.h /usr/include/bits/cpu-set.h \
- /usr/include/time.h /usr/include/bits/time.h \
- /usr/include/bits/types/struct_tm.h \
- /usr/include/bits/types/struct_itimerspec.h /usr/include/GL/gl.h \
- /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
+ /usr/include/GL/gl.h /usr/include/GL/glext.h \
+ /usr/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-unknown-linux-gnu/14.2/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-uintn.h /usr/include/bits/stdint-least.h \

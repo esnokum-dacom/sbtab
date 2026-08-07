@@ -223,19 +223,19 @@ PKG_CONFIG_ARGN:STRING=
 PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
 
 //Path to a file.
-X11_ICE_INCLUDE_PATH:PATH=X11_ICE_INCLUDE_PATH-NOTFOUND
+X11_ICE_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_ICE_LIB:FILEPATH=X11_ICE_LIB-NOTFOUND
+X11_ICE_LIB:FILEPATH=/usr/lib/libICE.so
 
 //Path to a library.
 X11_LIB:FILEPATH=/usr/lib/libX11.so
 
 //Path to a file.
-X11_SM_INCLUDE_PATH:PATH=X11_SM_INCLUDE_PATH-NOTFOUND
+X11_SM_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_SM_LIB:FILEPATH=X11_SM_LIB-NOTFOUND
+X11_SM_LIB:FILEPATH=/usr/lib/libSM.so
 
 //Path to a file.
 X11_X11_INCLUDE_PATH:PATH=/usr/include
@@ -346,16 +346,16 @@ X11_Xkblib_INCLUDE_PATH:PATH=/usr/include
 X11_Xlib_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a file.
-X11_Xmu_INCLUDE_PATH:PATH=X11_Xmu_INCLUDE_PATH-NOTFOUND
+X11_Xmu_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xmu_LIB:FILEPATH=X11_Xmu_LIB-NOTFOUND
+X11_Xmu_LIB:FILEPATH=/usr/lib/libXmu.so
 
 //Path to a file.
-X11_Xpm_INCLUDE_PATH:PATH=X11_Xpm_INCLUDE_PATH-NOTFOUND
+X11_Xpm_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xpm_LIB:FILEPATH=X11_Xpm_LIB-NOTFOUND
+X11_Xpm_LIB:FILEPATH=/usr/lib/libXpm.so
 
 //Path to a file.
 X11_Xpresent_INCLUDE_PATH:PATH=X11_Xpresent_INCLUDE_PATH-NOTFOUND
@@ -379,16 +379,16 @@ X11_Xrender_LIB:FILEPATH=/usr/lib/libXrender.so
 X11_Xshape_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a file.
-X11_Xss_INCLUDE_PATH:PATH=X11_Xss_INCLUDE_PATH-NOTFOUND
+X11_Xss_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xss_LIB:FILEPATH=X11_Xss_LIB-NOTFOUND
+X11_Xss_LIB:FILEPATH=/usr/lib/libXss.so
 
 //Path to a file.
-X11_Xt_INCLUDE_PATH:PATH=X11_Xt_INCLUDE_PATH-NOTFOUND
+X11_Xt_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xt_LIB:FILEPATH=X11_Xt_LIB-NOTFOUND
+X11_Xt_LIB:FILEPATH=/usr/lib/libXt.so
 
 //Path to a file.
 X11_Xtst_INCLUDE_PATH:PATH=/usr/include
@@ -640,6 +640,9 @@ X11_xkbfile_LIB:FILEPATH=X11_xkbfile_LIB-NOTFOUND
 XCOMPOSITE_LIB:FILEPATH=/usr/lib/libXcomposite.so
 
 //Path to a library.
+XEXT_LIB:FILEPATH=/usr/lib/libXext.so
+
+//Path to a library.
 XINERAMA_LIB:FILEPATH=/usr/lib/libXinerama.so
 
 //Path to a library.
@@ -747,6 +750,8 @@ CMAKE_HAVE_SHMAT:INTERNAL=1
 CMAKE_HOME_DIRECTORY:INTERNAL=/home/onu/dev/sbtb
 //Install .so files without execute permission.
 CMAKE_INSTALL_SO_NO_EXE:INTERNAL=0
+//Have library ICE
+CMAKE_LIB_ICE_HAS_ICECONNECTIONNUMBER:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER
 CMAKE_LINKER-ADVANCED:INTERNAL=1
 //Name of CMakeLists files to read

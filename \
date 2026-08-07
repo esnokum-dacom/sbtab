@@ -270,20 +270,8 @@ void initx(Client *c) {
 
     XSetInputFocus(c->d, c->w, RevertToParent, CurrentTime);
 
-    int grabbed = 0;
-    for (int i = 0; i < 200; i++) {
-        if (XGrabKeyboard(c->d, c->w, True, GrabModeAsync, GrabModeAsync, CurrentTime) == GrabSuccess) {
-            grabbed = 1;
-            break;
-        }
-        struct timespec ts = { 0, 5000000 }; /* 5ms */
-        nanosleep(&ts, NULL);
-    }
-    if (!grabbed)
-        fprintf(stderr, "sbtb: failed to grab keyboard after retries\n");
-
-    /* WM may have reasserted focus elsewhere while we were retrying */
-    XSetInputFocus(c->d, c->w, RevertToParent, CurrentTime);
+    if (XGrabKeyboard(c->d, c->w, True, GrabModeAsync, GrabModeAsync, CurrentTime) != GrabSuccess)
+        fprintf(stderr, "Failed to grab keyboard\n");
 
     glXMakeCurrent(c->d, c->w, c->glc);
 
@@ -295,7 +283,7 @@ void initx(Client *c) {
     
     glClearColor(0, 0, 0, 0);
 
-    c->font = XftFontOpenName(c->d, c->scr, "monospace-15");
+    c->font = XftFontOpenName(c->d, c->scr, "monospace-12");
     if (!c->font)
         die("cannot load font");
 
@@ -766,6 +754,14 @@ void draw_windows(Client *c) {
         if (i == selected)
             draw_highlight(tx, ty, sw, sh);
 
+        glColor4f(1, 1, 1, 1);
+
+        draw_rect(tx, ly - 5, sw, lh + 10, 0, 0, 0, 1);
+
+	draw_text(c, &items[i].label_tex, items[i].title, &lw, &lh, 0);
+        
+        draw_quad(items[i].label_tex, lx, ly, lw, lh);
+
         if (shape_rect_count + 3 < MAX_SHAPE_RECTS) {
             shape_rects[shape_rect_count].x = tx;
             shape_rects[shape_rect_count].y = ty;
@@ -944,8 +940,6 @@ void run(Client *c) {
 }
 
 void cleanup(Client *c) {
-    XUngrabKeyboard(c->d, CurrentTime);
-
     for (int i = 0; i < item_count; i++) {
         if (items[i].tex) glDeleteTextures(1, &items[i].tex);
         if (items[i].label_tex) glDeleteTextures(1, &items[i].label_tex);

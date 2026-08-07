@@ -4,11 +4,6 @@
 
 #define THUMB_MAX 300
 
-#define TITLE 1
-#define CLASS 1
-#define GEOM 1
-#define IDX 1
-
 #define SWITCHMOD Mod1Mask
 
 static const KeySym release_keys[] = { XK_Alt_L, XK_Alt_R };

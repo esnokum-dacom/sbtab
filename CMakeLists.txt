@@ -15,6 +15,7 @@ find_package(X11 REQUIRED)
 find_library(XRANDR_LIB Xrandr REQUIRED)
 find_library(XINERAMA_LIB Xinerama REQUIRED)
 find_library(XCOMPOSITE_LIB Xcomposite REQUIRED)
+find_library(XEXT_LIB Xext REQUIRED)
 find_library(GL_LIB GL REQUIRED)
 find_package(Threads REQUIRED)
 
@@ -29,6 +30,7 @@ target_link_libraries(sbtb
     ${X11_LIB}
     ${XINERAMA_LIB}
     ${XCOMPOSITE_LIB}
+    ${XEXT_LIB}
     ${XRANDR_LIB}
     ${XFT_LIBRARIES}
     ${GL_LIB}

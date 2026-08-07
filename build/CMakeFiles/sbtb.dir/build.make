@@ -99,6 +99,7 @@ bin/sbtb: CMakeFiles/sbtb.dir/compiler_depend.ts
 bin/sbtb: /usr/lib/libX11.so
 bin/sbtb: /usr/lib/libXinerama.so
 bin/sbtb: /usr/lib/libXcomposite.so
+bin/sbtb: /usr/lib/libXext.so
 bin/sbtb: /usr/lib/libXrandr.so
 bin/sbtb: /usr/lib/libGL.so
 bin/sbtb: CMakeFiles/sbtb.dir/link.txt

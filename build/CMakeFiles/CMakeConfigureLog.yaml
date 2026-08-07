@@ -14411,3 +14411,1074 @@ events:
       CMAKE_SYSTEM_LIBRARY_PATH:
         - "/usr/lib/X11"
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:179 (find_path)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "path"
+    variable: "X11_ICE_INCLUDE_PATH"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "X11/ICE/ICE.h"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/usr/include/X11/"
+      - "/usr/pkg/xorg/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R7/include/"
+      - "/usr/openwin/include/"
+      - "/usr/openwin/share/include/"
+      - "/opt/graphics/OpenGL/include/"
+      - "/opt/X11/include/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/X11/ICE/ICE.h"
+      - "/home/onu/.local/bin/X11/ICE/ICE.h"
+      - "/home/onu/.cargo/bin/X11/ICE/ICE.h"
+      - "/usr/local/sbin/X11/ICE/ICE.h"
+      - "/usr/local/bin/X11/ICE/ICE.h"
+      - "/usr/bin/X11/ICE/ICE.h"
+      - "/usr/sbin/X11/ICE/ICE.h"
+      - "/sbin/X11/ICE/ICE.h"
+      - "/bin/X11/ICE/ICE.h"
+      - "/usr/local/include/X11/ICE/ICE.h"
+      - "/usr/local/X11/ICE/ICE.h"
+    found: "/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:180 (find_path)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "path"
+    variable: "X11_SM_INCLUDE_PATH"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "X11/SM/SM.h"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/usr/include/X11/"
+      - "/usr/pkg/xorg/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R7/include/"
+      - "/usr/openwin/include/"
+      - "/usr/openwin/share/include/"
+      - "/opt/graphics/OpenGL/include/"
+      - "/opt/X11/include/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/X11/SM/SM.h"
+      - "/home/onu/.local/bin/X11/SM/SM.h"
+      - "/home/onu/.cargo/bin/X11/SM/SM.h"
+      - "/usr/local/sbin/X11/SM/SM.h"
+      - "/usr/local/bin/X11/SM/SM.h"
+      - "/usr/bin/X11/SM/SM.h"
+      - "/usr/sbin/X11/SM/SM.h"
+      - "/sbin/X11/SM/SM.h"
+      - "/bin/X11/SM/SM.h"
+      - "/usr/local/include/X11/SM/SM.h"
+      - "/usr/local/X11/SM/SM.h"
+    found: "/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:237 (find_path)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "path"
+    variable: "X11_Xmu_INCLUDE_PATH"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "X11/Xmu/Xmu.h"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/usr/include/X11/"
+      - "/usr/pkg/xorg/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R7/include/"
+      - "/usr/openwin/include/"
+      - "/usr/openwin/share/include/"
+      - "/opt/graphics/OpenGL/include/"
+      - "/opt/X11/include/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/X11/Xmu/Xmu.h"
+      - "/home/onu/.local/bin/X11/Xmu/Xmu.h"
+      - "/home/onu/.cargo/bin/X11/Xmu/Xmu.h"
+      - "/usr/local/sbin/X11/Xmu/Xmu.h"
+      - "/usr/local/bin/X11/Xmu/Xmu.h"
+      - "/usr/bin/X11/Xmu/Xmu.h"
+      - "/usr/sbin/X11/Xmu/Xmu.h"
+      - "/sbin/X11/Xmu/Xmu.h"
+      - "/bin/X11/Xmu/Xmu.h"
+      - "/usr/local/include/X11/Xmu/Xmu.h"
+      - "/usr/local/X11/Xmu/Xmu.h"
+    found: "/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:238 (find_path)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "path"
+    variable: "X11_Xpm_INCLUDE_PATH"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "X11/xpm.h"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/usr/include/X11/"
+      - "/usr/pkg/xorg/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R7/include/"
+      - "/usr/openwin/include/"
+      - "/usr/openwin/share/include/"
+      - "/opt/graphics/OpenGL/include/"
+      - "/opt/X11/include/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/X11/xpm.h"
+      - "/home/onu/.local/bin/X11/xpm.h"
+      - "/home/onu/.cargo/bin/X11/xpm.h"
+      - "/usr/local/sbin/X11/xpm.h"
+      - "/usr/local/bin/X11/xpm.h"
+      - "/usr/bin/X11/xpm.h"
+      - "/usr/sbin/X11/xpm.h"
+      - "/sbin/X11/xpm.h"
+      - "/bin/X11/xpm.h"
+      - "/usr/local/include/X11/xpm.h"
+      - "/usr/local/X11/xpm.h"
+    found: "/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:245 (find_path)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "path"
+    variable: "X11_Xss_INCLUDE_PATH"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "X11/extensions/scrnsaver.h"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/usr/include/X11/"
+      - "/usr/pkg/xorg/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R7/include/"
+      - "/usr/openwin/include/"
+      - "/usr/openwin/share/include/"
+      - "/opt/graphics/OpenGL/include/"
+      - "/opt/X11/include/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/X11/extensions/scrnsaver.h"
+      - "/home/onu/.local/bin/X11/extensions/scrnsaver.h"
+      - "/home/onu/.cargo/bin/X11/extensions/scrnsaver.h"
+      - "/usr/local/sbin/X11/extensions/scrnsaver.h"
+      - "/usr/local/bin/X11/extensions/scrnsaver.h"
+      - "/usr/bin/X11/extensions/scrnsaver.h"
+      - "/usr/sbin/X11/extensions/scrnsaver.h"
+      - "/sbin/X11/extensions/scrnsaver.h"
+      - "/bin/X11/extensions/scrnsaver.h"
+      - "/usr/local/include/X11/extensions/scrnsaver.h"
+      - "/usr/local/X11/extensions/scrnsaver.h"
+    found: "/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:248 (find_path)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "path"
+    variable: "X11_Xt_INCLUDE_PATH"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "X11/Intrinsic.h"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/usr/include/X11/"
+      - "/usr/pkg/xorg/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R7/include/"
+      - "/usr/openwin/include/"
+      - "/usr/openwin/share/include/"
+      - "/opt/graphics/OpenGL/include/"
+      - "/opt/X11/include/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/X11/Intrinsic.h"
+      - "/home/onu/.local/bin/X11/Intrinsic.h"
+      - "/home/onu/.cargo/bin/X11/Intrinsic.h"
+      - "/usr/local/sbin/X11/Intrinsic.h"
+      - "/usr/local/bin/X11/Intrinsic.h"
+      - "/usr/bin/X11/Intrinsic.h"
+      - "/usr/sbin/X11/Intrinsic.h"
+      - "/sbin/X11/Intrinsic.h"
+      - "/bin/X11/Intrinsic.h"
+      - "/usr/local/include/X11/Intrinsic.h"
+      - "/usr/local/X11/Intrinsic.h"
+    found: "/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:265 (find_library)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "library"
+    variable: "X11_ICE_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ICE"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libICE.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:266 (find_library)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "library"
+    variable: "X11_SM_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "SM"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libSM.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:315 (find_library)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "library"
+    variable: "X11_Xmu_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "Xmu"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libXmu.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:316 (find_library)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "library"
+    variable: "X11_Xpm_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "Xpm"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libXpm.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:321 (find_library)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "library"
+    variable: "X11_Xss_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "Xss"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libXss.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:322 (find_library)"
+      - "CMakeLists.txt:14 (find_package)"
+    mode: "library"
+    variable: "X11_Xt_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "Xt"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libXt.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-4.2/Modules/CheckLibraryExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-4.2/Modules/FindX11.cmake:771 (check_library_exists)"
+      - "CMakeLists.txt:14 (find_package)"
+    checks:
+      - "Looking for IceConnectionNumber in ICE"
+    directories:
+      source: "/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi"
+      binary: "/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_LIB_ICE_HAS_ICECONNECTIONNUMBER"
+      cached: true
+      stdout: |
+        Change Dir: '/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_2bf73/fast
+        make[1]: Entering directory '/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi'
+        /usr/bin/make  -f CMakeFiles/cmTC_2bf73.dir/build.make CMakeFiles/cmTC_2bf73.dir/build
+        make[2]: Entering directory '/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi'
+        Building C object CMakeFiles/cmTC_2bf73.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=IceConnectionNumber -std=gnu99 -o CMakeFiles/cmTC_2bf73.dir/CheckFunctionExists.c.o -c /home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi/CheckFunctionExists.c
+        Linking C executable cmTC_2bf73
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2bf73.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber CMakeFiles/cmTC_2bf73.dir/CheckFunctionExists.c.o -o cmTC_2bf73  -lICE
+        make[2]: Leaving directory '/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi'
+        make[1]: Leaving directory '/home/onu/dev/sbtb/build/CMakeFiles/CMakeScratch/TryCompile-H9WBDi'
+        
+      exitCode: 0
+  -
+    kind: "find-v1"
+    backtrace:
+      - "CMakeLists.txt:18 (find_library)"
+    mode: "library"
+    variable: "XEXT_LIB"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "Xext"
+    candidate_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    searched_directories:
+      - "/home/onu/.opencode/bin/"
+      - "/home/onu/.local/bin/"
+      - "/home/onu/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+    found: "/usr/lib/libXext.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/home/onu/.opencode/bin"
+        - "/home/onu/.local/bin"
+        - "/home/onu/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+...

@@ -5,6 +5,7 @@
 #include <X11/XKBlib.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/Xcomposite.h>
+#include <X11/extensions/shape.h>
 #include <X11/Xft/Xft.h>
 #include <pthread.h>
 #include <GL/gl.h>
@@ -80,9 +81,6 @@ void cleanup(Client *c);
 void resize(Client *c, int w, int h);
 GLuint make_text_texture(Client *c, const char *text, XGlyphInfo *extents_out);
 void draw_quad(GLuint tex, int x, int y, int w, int h);
-static int grid_cols(Client *c);
-static int grid_rows(Client *c);
-static int items_page(Client *c);
 
 static Window *get_clients(Display *d, Window root, int *count);
 static void get_title(Display *d, Window w, char *buf, size_t bufsz);
@@ -106,6 +104,5 @@ void handle_key(Client *c, XKeyEvent *e);
 
 void draw_rect(int x, int y, int w, int h, float r, float g, float b, float a);
 void draw_text(Client *c, GLuint *ut, const char *msg, int *w, int *h, size_t max_chars);
-void draw_hud(Client *c);
 
 static void *loader_main(void *arg);
