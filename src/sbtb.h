@@ -41,11 +41,14 @@ struct Client {
     int width, height;
 
     XVisualInfo *vi;
+    GLXFBConfig fbconfig;
     GLXContext glc;
     XftFont *font;
     XftColor xftcolor;
     int running;
     int mon;
+    int compositing;
+    int argb;
 };
 
 typedef struct {
@@ -67,6 +70,10 @@ typedef struct {
     int label_w, label_h;
     char title[256];
     char class[128];
+    GLuint icon_tex;
+    int icon_w, icon_h;
+    unsigned char *icon_pixels;
+    int use_default_icon;
 } WinItem;
 
 typedef struct {
@@ -86,6 +93,9 @@ static Window *get_clients(Display *d, Window root, int *count);
 static void get_title(Display *d, Window w, char *buf, size_t bufsz);
 static void get_class(Display *d, Window w, char *buf, size_t bufsz);
 static int get_win_monitor(Display *d, Window w);
+static int has_compositor(Display *d, int scr);
+static int load_default_icon(void);
+static int get_wm_icon(Display *d, Window w, unsigned char **out, int *out_w, int *out_h);
 static unsigned char *capture_thumb(Client *c, Window w, int *out_w, int *out_h, int *src_w, int *src_h);
 void load_clients_async(Client *c);
 void draw_windows(Client *c);

@@ -1,14 +1,17 @@
 #define _DEFAULT_SOURCE
+#include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <png.h>
 #include <signal.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/file.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
@@ -33,9 +36,16 @@ static volatile int loader_done = 0;
 static volatile int expect_err = 0;
 static volatile int got_err = 0;
 
-#define MAX_SHAPE_RECTS 4096
-static XRectangle shape_rects[MAX_SHAPE_RECTS];
-static int shape_rect_count = 0;
+static GLuint default_icon_tex = 0;
+static int default_icon_w = 0;
+static int default_icon_h = 0;
+static unsigned char *default_icon_pixels = NULL;
+
+#define MAX_BLUR_RECTS 128
+static XRectangle blur_rects[MAX_BLUR_RECTS];
+static int blur_rect_count = 0;
+static unsigned long *blur_sent_vals = NULL;
+static int blur_sent_n = -1;
 
 #define ANIM_MS 180
 #define ANIM_DURATION (ANIM_MS / 1000.0)
@@ -61,11 +71,264 @@ static int xerror(Display *d, XErrorEvent *e) {
     return 0;
 }
 
+static int has_compositor(Display *d, int scr) {
+    char name[64];
+    snprintf(name, sizeof(name), "_NET_WM_CM_S%d", scr);
+    Atom a = XInternAtom(d, name, False);
+    return XGetSelectionOwner(d, a) != None;
+}
+
+static int exe_dir(char *buf, size_t n) {
+    char link[4096];
+    ssize_t r = readlink("/proc/self/exe", link, sizeof(link) - 1);
+    if (r <= 0)
+        return -1;
+    link[r] = '\0';
+    char *slash = strrchr(link, '/');
+    if (!slash)
+        return -1;
+    snprintf(buf, n, "%.*s", (int)(slash - link), link);
+    return 0;
+}
+
+static const char *find_default_icon_path(void) {
+    const char *env = getenv("SBTB_ICON");
+    if (env && *env) {
+        struct stat st;
+        if (stat(env, &st) == 0 && S_ISREG(st.st_mode))
+            return env;
+    }
+
+    char buf[4096];
+    if (exe_dir(buf, sizeof(buf)) == 0) {
+        static char p1[8200];
+        snprintf(p1, sizeof(p1), "%s/dicon.png", buf);
+        struct stat st;
+        if (stat(p1, &st) == 0 && S_ISREG(st.st_mode))
+            return p1;
+    }
+
+    struct stat st;
+    if (stat("src/dicon.png", &st) == 0 && S_ISREG(st.st_mode))
+        return "src/dicon.png";
+    if (stat("dicon.png", &st) == 0 && S_ISREG(st.st_mode))
+        return "dicon.png";
+
+    return NULL;
+}
+
+static unsigned char *load_png_file(const char *path, int *out_w, int *out_h) {
+    FILE *f = fopen(path, "rb");
+    if (!f)
+        return NULL;
+
+    unsigned char sig[8];
+    if (fread(sig, 1, 8, f) != 8 || !png_check_sig(sig, 8)) {
+        fclose(f);
+        return NULL;
+    }
+
+    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    png_infop info = png_create_info_struct(png);
+    if (!png || !info) {
+        if (png) png_destroy_read_struct(&png, NULL, NULL);
+        fclose(f);
+        return NULL;
+    }
+
+    if (setjmp(png_jmpbuf(png))) {
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(f);
+        return NULL;
+    }
+
+    png_init_io(png, f);
+    png_set_sig_bytes(png, 8);
+    png_read_info(png, info);
+
+    png_uint_32 w = png_get_image_width(png, info);
+    png_uint_32 h = png_get_image_height(png, info);
+    png_byte ct = png_get_color_type(png, info);
+    png_byte bd = png_get_bit_depth(png, info);
+
+    if (ct == PNG_COLOR_TYPE_PALETTE)
+        png_set_palette_to_rgb(png);
+    if (png_get_valid(png, info, PNG_INFO_tRNS))
+        png_set_tRNS_to_alpha(png);
+    if (bd == 16)
+        png_set_strip_16(png);
+    if (ct == PNG_COLOR_TYPE_RGB || ct == PNG_COLOR_TYPE_GRAY)
+        png_set_filler(png, 0xff, PNG_FILLER_AFTER);
+    if (ct == PNG_COLOR_TYPE_GRAY || ct == PNG_COLOR_TYPE_GRAY_ALPHA)
+        png_set_gray_to_rgb(png);
+
+    png_read_update_info(png, info);
+
+    unsigned char *buf = malloc((size_t)w * h * 4);
+    png_bytep *rows = malloc(sizeof(png_bytep) * h);
+    for (png_uint_32 y = 0; y < h; y++)
+        rows[y] = buf + (size_t)y * w * 4;
+    png_read_image(png, rows);
+    free(rows);
+    png_read_end(png, NULL);
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(f);
+
+    *out_w = (int)w;
+    *out_h = (int)h;
+    return buf;
+}
+
+static int load_default_icon(void) {
+    const char *path = find_default_icon_path();
+    if (!path) {
+        fprintf(stderr, "sbtb: warning: no dicon.png found, icons disabled\n");
+        return 0;
+    }
+    default_icon_pixels = load_png_file(path, &default_icon_w, &default_icon_h);
+    if (!default_icon_pixels) {
+        fprintf(stderr, "sbtb: warning: failed to load %s\n", path);
+        return 0;
+    }
+
+    glGenTextures(1, &default_icon_tex);
+    glBindTexture(GL_TEXTURE_2D, default_icon_tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, default_icon_w, default_icon_h, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, default_icon_pixels);
+    return 1;
+}
+
+static int get_wm_icon(Display *d, Window w, unsigned char **out, int *out_w, int *out_h) {
+    Atom prop = XInternAtom(d, "_NET_WM_ICON", False);
+    Atom type = None;
+    int fmt = 0;
+    unsigned long n = 0, rem = 0;
+    unsigned char *data = NULL;
+
+    if (XGetWindowProperty(d, w, prop, 0, 0xffffff, False, XA_CARDINAL,
+        &type, &fmt, &n, &rem, &data) != Success || fmt != 32 || n < 2) {
+        if (data) XFree(data);
+        return 0;
+    }
+
+    unsigned long *l = (unsigned long *)data;
+    unsigned long pos = 0;
+    long best_w = -1, best_h = -1, best_area = -1;
+    unsigned long best_off = 0;
+
+    while (pos + 2 <= n) {
+        long iw = (long)(l[pos] & 0xffffffffUL);
+        long ih = (long)(l[pos + 1] & 0xffffffffUL);
+        pos += 2;
+        if (iw < 1 || ih < 1 || iw > 2048 || ih > 2048)
+            break;
+        unsigned long npix = (unsigned long)iw * ih;
+        if (pos + npix > n)
+            break;
+        long area = (long)npix;
+        if (area > best_area) {
+            best_area = area;
+            best_w = iw;
+            best_h = ih;
+            best_off = pos;
+        }
+        pos += npix;
+    }
+
+    if (best_w < 0) {
+        XFree(data);
+        return 0;
+    }
+
+    unsigned char *buf = malloc((size_t)best_w * best_h * 4);
+    for (long y = 0; y < best_h; y++) {
+        for (long x = 0; x < best_w; x++) {
+            unsigned long v = l[best_off + (unsigned long)(y * best_w + x)] & 0xffffffffUL;
+            int i = (int)(y * best_w + x) * 4;
+            buf[i + 0] = (v >> 16) & 0xff;
+            buf[i + 1] = (v >> 8) & 0xff;
+            buf[i + 2] = v & 0xff;
+            buf[i + 3] = (v >> 24) & 0xff;
+        }
+    }
+
+    XFree(data);
+    *out = buf;
+    *out_w = (int)best_w;
+    *out_h = (int)best_h;
+    return 1;
+}
+
 static void set_swap_interval(Display *d, GLXDrawable w) {
     PFNGLXSWAPINTERVALEXTPROC swap =
         (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB((const GLubyte *)"glXSwapIntervalEXT");
     if (swap)
         swap(d, w, 1);
+}
+
+static void blur_prop_set(Client *c, unsigned long *vals, int n) {
+    Atom a1 = XInternAtom(c->d, "_KDE_NET_WM_BLUR_BEHIND_REGION", False);
+    Atom a2 = XInternAtom(c->d, "_NET_WM_BLUR_BEHIND_REGION", False);
+    XChangeProperty(c->d, c->w, a1, XA_CARDINAL, 32, PropModeReplace, (const unsigned char *)vals, n);
+    XChangeProperty(c->d, c->w, a2, XA_CARDINAL, 32, PropModeReplace, (const unsigned char *)vals, n);
+}
+
+static void blur_prop_clear(Client *c) {
+    Atom a1 = XInternAtom(c->d, "_KDE_NET_WM_BLUR_BEHIND_REGION", False);
+    Atom a2 = XInternAtom(c->d, "_NET_WM_BLUR_BEHIND_REGION", False);
+    XDeleteProperty(c->d, c->w, a1);
+    XDeleteProperty(c->d, c->w, a2);
+}
+
+static unsigned long *blur_snapshot(unsigned long *vals, int n) {
+    unsigned long *copy = malloc((size_t)n * sizeof(unsigned long));
+    if (!copy)
+        return NULL;
+    memcpy(copy, vals, (size_t)n * sizeof(unsigned long));
+    return copy;
+}
+
+static void update_blur_region(Client *c) {
+    if (!c->compositing) {
+        if (blur_sent_n >= 0) {
+            blur_prop_clear(c);
+            free(blur_sent_vals);
+            blur_sent_vals = NULL;
+            blur_sent_n = -1;
+        }
+        return;
+    }
+
+    int n;
+    unsigned long vals[MAX_BLUR_RECTS * 4 + 1];
+    if (blur_rect_count == 0) {
+        n = 1;
+        vals[0] = 0;
+    } else {
+        n = blur_rect_count * 4;
+        for (int i = 0; i < blur_rect_count; i++) {
+            vals[i * 4 + 0] = (unsigned long)blur_rects[i].x;
+            vals[i * 4 + 1] = (unsigned long)blur_rects[i].y;
+            vals[i * 4 + 2] = (unsigned long)blur_rects[i].width;
+            vals[i * 4 + 3] = (unsigned long)blur_rects[i].height;
+        }
+    }
+
+    if (blur_sent_n == n && blur_sent_vals &&
+        memcmp(blur_sent_vals, vals, (size_t)n * sizeof(unsigned long)) == 0)
+        return;
+
+    blur_prop_set(c, vals, n);
+    unsigned long *copy = blur_snapshot(vals, n);
+    if (copy) {
+        free(blur_sent_vals);
+        blur_sent_vals = copy;
+        blur_sent_n = n;
+    }
 }
 
 static int lockfd = -1;
@@ -154,6 +417,24 @@ void resize(Client *c, int w, int h) {
     glLoadIdentity();
 }
 
+static GLXFBConfig fbconfig_for_visual(Display *d, int scr, VisualID vid) {
+    int n = 0;
+    GLXFBConfig *cfs = glXGetFBConfigs(d, scr, &n);
+    if (!cfs)
+        return NULL;
+    GLXFBConfig best = NULL;
+    for (int i = 0; i < n; i++) {
+        int vi = 0;
+        glXGetFBConfigAttrib(d, cfs[i], GLX_VISUAL_ID, &vi);
+        if ((VisualID)vi == vid) {
+            best = cfs[i];
+            break;
+        }
+    }
+    XFree(cfs);
+    return best;
+}
+
 void initx(Client *c) {
     c->d = XOpenDisplay(NULL);
     if (!c->d)
@@ -161,31 +442,58 @@ void initx(Client *c) {
 
     int ev, err;
     if (!XCompositeQueryExtension(c->d, &ev, &err))
-        die("XComposite extension unavailable, is sbcomp running?");
+        die("XComposite extension unavailable (needed for client thumbnails)");
 
     XSetErrorHandler(xerror);
 
     c->scr = DefaultScreen(c->d);
     c->root = RootWindow(c->d, c->scr);
+    c->compositing = has_compositor(c->d, c->scr);
+    c->argb = 0;
+    c->fbconfig = NULL;
 
     int mw = DisplayWidth(c->d, c->scr);
     int mh = DisplayHeight(c->d, c->scr);
 
-    c->width = 1100;
-    c->height = 500;
     c->running = 1;
 
     XkbSetDetectableAutoRepeat(c->d, True, NULL);
 
-    int glattr[] = {
-        GLX_RGBA,
-        GLX_DOUBLEBUFFER,
-        GLX_RED_SIZE, 8,
-        GLX_GREEN_SIZE, 8,
-        GLX_BLUE_SIZE, 8,
-        GLX_ALPHA_SIZE, 8,
-        None
-    };
+    c->argb = 0;
+    c->fbconfig = NULL;
+
+    {
+        XVisualInfo vis;
+
+        /* Prefer a true 32-bit ARGB visual. Some drivers report a 24-bit
+           visual with GLX_ALPHA_SIZE 8, which has no real alpha buffer and
+           shows as an opaque black background under a compositor. */
+        if (XMatchVisualInfo(c->d, c->scr, 32, TrueColor, &vis) ||
+            XMatchVisualInfo(c->d, c->scr, 32, DirectColor, &vis)) {
+            c->vi = malloc(sizeof(XVisualInfo));
+            if (c->vi)
+                *c->vi = vis;
+            c->fbconfig = fbconfig_for_visual(c->d, c->scr, XVisualIDFromVisual(vis.visual));
+            if (c->fbconfig && c->vi)
+                c->argb = 1;
+        }
+    }
+    if (!c->argb || !c->vi) {
+        static int legacy[] = {
+            GLX_RGBA,
+            GLX_DOUBLEBUFFER,
+            GLX_RED_SIZE, 8,
+            GLX_GREEN_SIZE, 8,
+            GLX_BLUE_SIZE, 8,
+            None
+        };
+        if (c->vi)
+            free(c->vi);
+        c->vi = glXChooseVisual(c->d, c->scr, legacy);
+        if (!c->vi)
+            die("no suitable GLX visual");
+        c->argb = 0;
+    }
 
     int mx = 0, my = 0;
     c->mon = 0;
@@ -218,10 +526,6 @@ void initx(Client *c) {
         }
     }
 
-    c->vi = glXChooseVisual(c->d, c->scr, glattr);
-    if (!c->vi)
-        die("no suitable GLX visual with alpha channel");
-
     c->width = mw;
     c->height = mh;
 
@@ -231,15 +535,23 @@ void initx(Client *c) {
     c->attrs.override_redirect = True;
     c->attrs.colormap = c->cmap;
     c->attrs.background_pixmap = None;
+    c->attrs.background_pixel = 0;
     c->attrs.border_pixel = 0;
     c->attrs.bit_gravity = StaticGravity;
     c->attrs.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask;
 
     c->w = XCreateWindow(c->d, c->root, mx + (mw - c->width) / 2, my + (mh - c->height) / 2, c->width, c->height, 0, c->vi->depth,
                       InputOutput, c->vis,
-                      CWOverrideRedirect | CWColormap | CWBackPixmap | CWBorderPixel | CWBitGravity | CWEventMask, &c->attrs);
+                      CWOverrideRedirect | CWColormap | CWBackPixmap | CWBorderPixel | CWBitGravity | CWEventMask | CWBackPixel, &c->attrs);
 
     XStoreName(c->d, c->w, "sbtb");
+
+    {
+        static const char class_name[] = "sbtb\0sbtb";
+        Atom wmclass = XInternAtom(c->d, "WM_CLASS", False);
+        XChangeProperty(c->d, c->w, wmclass, XA_STRING, 8, PropModeReplace,
+                        (const unsigned char *)class_name, sizeof(class_name));
+    }
 
     c->wmdeletewin = XInternAtom(c->d, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(c->d, c->w, &c->wmdeletewin, 1);
@@ -254,11 +566,17 @@ void initx(Client *c) {
     XChangeProperty(c->d, c->w, c->wmname, c->wmnameutf8, 8,
                 PropModeReplace, (const unsigned char *)"sbtb", strlen("sbtb"));
 
-    c->glc = glXCreateContext(c->d, c->vi, NULL, GL_TRUE);
-    if (!c->glc)
-        die("cannot create GLX context");
+    if (c->fbconfig) {
+        c->glc = glXCreateNewContext(c->d, c->fbconfig, GLX_RGBA_TYPE, NULL, True);
+        if (!c->glc)
+            die("cannot create GLX context");
+    } else {
+        c->glc = glXCreateContext(c->d, c->vi, NULL, GL_TRUE);
+        if (!c->glc)
+            die("cannot create GLX context");
+    }
 
-    XShapeCombineRectangles(c->d, c->w, ShapeBounding, 0, 0, NULL, 0, ShapeSet, Unsorted);
+    /* Let pointer events pass through; we only interact via the keyboard grab */
     XShapeCombineRectangles(c->d, c->w, ShapeInput, 0, 0, NULL, 0, ShapeSet, Unsorted);
 
     XMapWindow(c->d, c->w);
@@ -285,15 +603,21 @@ void initx(Client *c) {
     /* WM may have reasserted focus elsewhere while we were retrying */
     XSetInputFocus(c->d, c->w, RevertToParent, CurrentTime);
 
-    glXMakeCurrent(c->d, c->w, c->glc);
+    if (c->fbconfig)
+        glXMakeContextCurrent(c->d, c->w, c->w, c->glc);
+    else
+        glXMakeCurrent(c->d, c->w, c->glc);
 
     set_swap_interval(c->d, c->w);
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    glClearColor(0, 0, 0, 0);
+
+    if (c->compositing)
+        glClearColor(0, 0, 0, 0);
+    else
+        glClearColor(0, 0, 0, 1);
 
     c->font = XftFontOpenName(c->d, c->scr, "monospace-15");
     if (!c->font)
@@ -301,6 +625,8 @@ void initx(Client *c) {
 
     XRenderColor rc = { 0xffff, 0xffff, 0xffff, 0xffff };
     XftColorAllocValue(c->d, c->vis, c->cmap, &rc, &c->xftcolor);
+
+    load_default_icon();
 
     resize(c, c->width, c->height);
 }
@@ -542,6 +868,9 @@ static int get_win_monitor(Display *d, Window w) {
 }
 
 static unsigned char *capture_thumb(Client *c, Window w, int *out_w, int *out_h, int *src_w, int *src_h) {
+    if (!c->compositing)
+        return NULL;
+
     XWindowAttributes wa;
     if (!XGetWindowAttributes(c->d, w, &wa) || wa.map_state != IsViewable)
         return NULL;
@@ -623,31 +952,46 @@ static void *loader_main(void *arg) {
         if (wmon != -1 && wmon != c->mon)
             continue;
 
-        int w, h, sw, sh;
-        unsigned char *px = capture_thumb(&lc, wins[i], &w, &h, &sw, &sh);
-        if (!px) {
-            fprintf(stderr, "sbtb: capture failed for 0x%08x, showing placeholder\n", (unsigned int)wins[i]);
-            w = h = THUMB_MAX;
-            sw = sh = 0;
-            px = malloc((size_t)w * h * 4);
-            for (int p = 0; p < w * h; p++) {
-                px[p * 4 + 0] = 45;
-                px[p * 4 + 1] = 45;
-                px[p * 4 + 2] = 52;
-                px[p * 4 + 3] = 255;
+        WinItem *it = &items[item_count];
+        it->win = wins[i];
+        it->pixels = NULL;
+        it->w = 0;
+        it->h = 0;
+        it->src_w = 0;
+        it->src_h = 0;
+        it->tex = 0;
+        it->icon_pixels = NULL;
+        it->icon_w = 0;
+        it->icon_h = 0;
+        it->use_default_icon = 0;
+        it->label_tex = 0;
+        it->ready = 0;
+        it->uploaded = 0;
+
+        if (lc.compositing) {
+            int w, h, sw, sh;
+            unsigned char *px = capture_thumb(&lc, wins[i], &w, &h, &sw, &sh);
+            if (px) {
+                it->pixels = px;
+                it->w = w;
+                it->h = h;
+                it->src_w = sw;
+                it->src_h = sh;
+            } else {
+                fprintf(stderr, "sbtb: capture failed for 0x%08x, falling back to icon\n", (unsigned int)wins[i]);
             }
         }
 
-        WinItem *it = &items[item_count];
-        it->win = wins[i];
-        it->pixels = px;
-        it->w = w;
-        it->h = h;
-        it->src_w = sw;
-        it->src_h = sh;
-        it->tex = 0;
-        it->label_tex = 0;
-        it->uploaded = 0;
+        unsigned char *ip = NULL;
+        int iw, ih;
+        if (get_wm_icon(ld, wins[i], &ip, &iw, &ih)) {
+            it->icon_pixels = ip;
+            it->icon_w = iw;
+            it->icon_h = ih;
+        } else {
+            it->use_default_icon = 1;
+        }
+
         get_title(ld, wins[i], it->title, sizeof(it->title));
         get_class(ld, wins[i], it->class, sizeof(it->class));
         __sync_synchronize();
@@ -669,16 +1013,33 @@ void upload_pending_textures(Client *c) {
     for (int i = 0; i < item_count; i++) {
         WinItem *it = &items[i];
         if (it->ready && !it->uploaded) {
-            glGenTextures(1, &it->tex);
-            glBindTexture(GL_TEXTURE_2D, it->tex);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, it->w, it->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, it->pixels);
+            if (it->pixels) {
+                glGenTextures(1, &it->tex);
+                glBindTexture(GL_TEXTURE_2D, it->tex);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, it->w, it->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, it->pixels);
+                free(it->pixels);
+                it->pixels = NULL;
+            }
 
-            free(it->pixels);
-            it->pixels = NULL;
+            if (it->icon_pixels) {
+                glGenTextures(1, &it->icon_tex);
+                glBindTexture(GL_TEXTURE_2D, it->icon_tex);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, it->icon_w, it->icon_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, it->icon_pixels);
+                free(it->icon_pixels);
+                it->icon_pixels = NULL;
+            } else if (it->use_default_icon) {
+                it->icon_tex = default_icon_tex;
+                it->icon_w = default_icon_w;
+                it->icon_h = default_icon_h;
+            }
 
             XGlyphInfo ext;
             it->label_tex = make_text_texture(c, it->title, &ext);
@@ -723,7 +1084,7 @@ static int carousel_target(Client *c) {
 }
 
 void draw_windows(Client *c) {
-    shape_rect_count = 0;
+    blur_rect_count = 0;
 
     int cy = c->height / 2;
     int cx = c->width / 2;
@@ -735,6 +1096,20 @@ void draw_windows(Client *c) {
         if (!items[i].uploaded)
             continue;
 
+        GLuint tex = 0;
+        int iw = 0, ih = 0;
+        if (c->compositing && items[i].tex) {
+            tex = items[i].tex;
+            iw = items[i].w;
+            ih = items[i].h;
+        } else {
+            tex = items[i].icon_tex;
+            iw = items[i].icon_w;
+            ih = items[i].icon_h;
+        }
+        if (!tex || iw < 1 || ih < 1)
+            continue;
+
         int ix = offset + i * CELL_W;
         int iy = cy - CELL_H / 2;
 
@@ -744,8 +1119,15 @@ void draw_windows(Client *c) {
         if (s < 0.70f)
             s = 0.70f;
 
-        int sw = (int)(items[i].w * s);
-        int sh = (int)(items[i].h * s);
+        float fit = (float)THUMB_MAX / iw;
+        float fit_h = (float)THUMB_MAX / ih;
+        if (fit_h < fit)
+            fit = fit_h;
+        if (fit > 1)
+            fit = 1;
+
+        int sw = (int)(iw * fit * s);
+        int sh = (int)(ih * fit * s);
         int lw = (int)(items[i].label_w * s);
         int lh = (int)(items[i].label_h * s);
         if (lw > sw) {
@@ -760,33 +1142,25 @@ void draw_windows(Client *c) {
         int lx = ix + (CELL_W - lw) / 2;
         int ly = ty + sh / 1.1;
 
-	glColor4f(1, 1, 1, 1);
-        draw_quad(items[i].tex, tx, ty, sw, sh);
+        glColor4f(1, 1, 1, 1);
+        draw_quad(tex, tx, ty, sw, sh);
+
+        if (blur_rect_count + 2 <= MAX_BLUR_RECTS) {
+            blur_rects[blur_rect_count].x = tx;
+            blur_rects[blur_rect_count].y = ty;
+            blur_rects[blur_rect_count].width = sw;
+            blur_rects[blur_rect_count].height = sh;
+            blur_rect_count++;
+
+            blur_rects[blur_rect_count].x = lx;
+            blur_rects[blur_rect_count].y = ly;
+            blur_rects[blur_rect_count].width = lw;
+            blur_rects[blur_rect_count].height = lh;
+            blur_rect_count++;
+        }
 
         if (i == selected)
             draw_highlight(tx, ty, sw, sh);
-
-        if (shape_rect_count + 3 < MAX_SHAPE_RECTS) {
-            shape_rects[shape_rect_count].x = tx;
-            shape_rects[shape_rect_count].y = ty;
-            shape_rects[shape_rect_count].width = sw;
-            shape_rects[shape_rect_count].height = sh;
-            shape_rect_count++;
-
-            shape_rects[shape_rect_count].x = lx;
-            shape_rects[shape_rect_count].y = ly;
-            shape_rects[shape_rect_count].width = lw;
-            shape_rects[shape_rect_count].height = lh;
-            shape_rect_count++;
-
-            if (i == selected) {
-                shape_rects[shape_rect_count].x = tx - 2;
-                shape_rects[shape_rect_count].y = ty - 2;
-                shape_rects[shape_rect_count].width = sw + 4;
-                shape_rects[shape_rect_count].height = sh + 4;
-                shape_rect_count++;
-            }
-        }
     }
 }
 
@@ -830,9 +1204,27 @@ void draw_text(Client *c, GLuint *ut, const char *msg, int *w, int *h, size_t ma
 
 void run(Client *c) {
     int selected_init = 0;
+    double last_comp_check = 0;
 
     while (c->running) {
         upload_pending_textures(c);
+
+        struct timespec ts;
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        double now = ts.tv_sec + ts.tv_nsec / 1e9;
+
+        if (now - last_comp_check > 0.25) {
+            last_comp_check = now;
+            int comp = has_compositor(c->d, c->scr);
+            if (comp != c->compositing) {
+                c->compositing = comp;
+                if (comp)
+                    glClearColor(0, 0, 0, 0);
+                else
+                    glClearColor(0, 0, 0, 1);
+                dirty = 1;
+            }
+        }
 
         if (loader_done && !selected_init) {
             selected = item_count > 1 ? 1 : 0;
@@ -881,23 +1273,23 @@ void run(Client *c) {
         int target = carousel_target(c);
 
         if (loader_done) {
-            struct timespec ts;
-            clock_gettime(CLOCK_MONOTONIC, &ts);
-            double now = ts.tv_sec + ts.tv_nsec / 1e9;
+            struct timespec ts2;
+            clock_gettime(CLOCK_MONOTONIC, &ts2);
+            double now2 = ts2.tv_sec + ts2.tv_nsec / 1e9;
 
             if (!animating && target != (int)slide) {
                 animating = 1;
                 slide_from = slide;
-                anim_start = now;
+                anim_start = now2;
                 anim_target = (float)target;
             } else if (animating && target != (int)anim_target) {
                 slide_from = slide;
-                anim_start = now;
+                anim_start = now2;
                 anim_target = (float)target;
             }
 
             if (animating) {
-                double t = (now - anim_start) / ANIM_DURATION;
+                double t = (now2 - anim_start) / ANIM_DURATION;
                 if (t >= 1.0) {
                     slide = anim_target;
                     animating = 0;
@@ -927,9 +1319,8 @@ void run(Client *c) {
                 draw_windows(c);
 
             glXSwapBuffers(c->d, c->w);
+            update_blur_region(c);
 
-            if (shape_rect_count > 0)
-                XShapeCombineRectangles(c->d, c->w, ShapeBounding, 0, 0, shape_rects, shape_rect_count, ShapeSet, Unsorted);
             dirty = 0;
         }
 
@@ -949,16 +1340,29 @@ void cleanup(Client *c) {
     for (int i = 0; i < item_count; i++) {
         if (items[i].tex) glDeleteTextures(1, &items[i].tex);
         if (items[i].label_tex) glDeleteTextures(1, &items[i].label_tex);
+        if (items[i].icon_tex && items[i].icon_tex != default_icon_tex)
+            glDeleteTextures(1, &items[i].icon_tex);
         free(items[i].pixels);
+        free(items[i].icon_pixels);
     }
     free(items);
 
+    if (default_icon_tex)
+        glDeleteTextures(1, &default_icon_tex);
+    free(default_icon_pixels);
+    free(blur_sent_vals);
+
     XftColorFree(c->d, c->vis, c->cmap, &c->xftcolor);
     XftFontClose(c->d, c->font);
-    glXMakeCurrent(c->d, None, NULL);
+    if (c->fbconfig)
+        glXMakeContextCurrent(c->d, None, None, NULL);
+    else
+        glXMakeCurrent(c->d, None, NULL);
     glXDestroyContext(c->d, c->glc);
     XDestroyWindow(c->d, c->w);
     XFreeColormap(c->d, c->cmap);
+    if (c->vi)
+        XFree(c->vi);
     XCloseDisplay(c->d);
 }
 

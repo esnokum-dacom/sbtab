@@ -152,6 +152,9 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o: /home/onu/dev/sbtb/src/sbtb.c \
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
   /usr/include/inttypes.h \
+  /usr/include/libpng16/png.h \
+  /usr/include/libpng16/pngconf.h \
+  /usr/include/libpng16/pnglibconf.h \
   /usr/include/limits.h \
   /usr/include/linux/errno.h \
   /usr/include/linux/limits.h \
@@ -191,15 +194,15 @@ bin/sbtb: /lib64/libGLX.so.0 \
   /lib64/libfontconfig.so.1 \
   /lib64/libfreetype.so.6 \
   /lib64/libm.so.6 \
-  /lib64/libpng16.so.16 \
   /lib64/libxcb.so.1 \
-  /lib64/libz.so.1 \
   /usr/lib/libGL.so \
   /usr/lib/libX11.so \
   /usr/lib/libXcomposite.so \
   /usr/lib/libXext.so \
   /usr/lib/libXinerama.so \
   /usr/lib/libXrandr.so \
+  /usr/lib/libpng.so \
+  /usr/lib/libz.so \
   /usr/lib32/libGLX.so.0 \
   /usr/lib32/libGLdispatch.so.0 \
   /usr/lib32/libXau.so.6 \
@@ -208,7 +211,6 @@ bin/sbtb: /lib64/libGLX.so.0 \
   /usr/lib32/libexpat.so.1 \
   /usr/lib32/libm.so.6 \
   /usr/lib32/libxcb.so.1 \
-  /usr/lib32/libz.so.1 \
   /usr/lib64/Scrt1.o \
   /usr/lib64/crti.o \
   /usr/lib64/crtn.o \
@@ -239,8 +241,6 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /usr/lib64/crtn.o:
 
-/usr/lib32/libz.so.1:
-
 /usr/lib32/libm.so.6:
 
 /usr/lib32/libexpat.so.1:
@@ -255,11 +255,11 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /usr/lib32/libGLX.so.0:
 
+/usr/lib/libpng.so:
+
 /usr/lib/libX11.so:
 
 /lib64/libxcb.so.1:
-
-/lib64/libpng16.so.16:
 
 /lib64/libexpat.so.1:
 
@@ -272,8 +272,6 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 /lib64/libXau.so.6:
 
 /lib64/libGLdispatch.so.0:
-
-/lib64/libGLX.so.0:
 
 /usr/include/time.h:
 
@@ -303,6 +301,10 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /usr/include/limits.h:
 
+/lib64/libGLX.so.0:
+
+/usr/include/libpng16/pngconf.h:
+
 /usr/include/inttypes.h:
 
 /usr/include/gnu/stubs-64.h:
@@ -314,6 +316,8 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 /usr/lib/gcc/x86_64-unknown-linux-gnu/14.2/include/stddef.h:
 
 /usr/include/freetype2/freetype/ftmoderr.h:
+
+/usr/include/libpng16/png.h:
 
 /usr/include/freetype2/freetype/ftimage.h:
 
@@ -469,6 +473,8 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /usr/include/X11/Xfuncproto.h:
 
+/usr/lib/libz.so:
+
 /usr/include/X11/Xosdefs.h:
 
 /usr/include/bits/local_lim.h:
@@ -565,8 +571,6 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /usr/include/bits/signal_ext.h:
 
-/lib64/libz.so.1:
-
 /usr/include/bits/signum-arch.h:
 
 /usr/include/bits/posix2_lim.h:
@@ -624,6 +628,8 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 /usr/include/bits/types/__fpos64_t.h:
 
 /usr/include/bits/types/__locale_t.h:
+
+/usr/include/libpng16/pnglibconf.h:
 
 /usr/include/freetype2/freetype/config/ftoption.h:
 

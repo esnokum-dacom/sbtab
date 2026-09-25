@@ -1,5 +1,5 @@
 CFLAGS += -std=c99 -O -Wall -Wextra -pedantic -Wold-style-declaration -Wmissing-prototypes -Wno-unused-parameter
-CLIBS  += -lX11 -lXinerama -lXcomposite -lXft -lGL -lpthread $(shell pkg-config --cflags --libs xft)
+CLIBS  += -lX11 -lXinerama -lXcomposite -lXft -lGL -lpng -lpthread $(shell pkg-config --cflags --libs xft)
 PREFIX ?= /usr
 BINDIR ?= $(PREFIX)/bin
 CC     ?= gcc

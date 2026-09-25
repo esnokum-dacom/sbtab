@@ -1,1 +1,2 @@
 /usr/local/bin/sbtb
+/usr/local/bin/dicon.png

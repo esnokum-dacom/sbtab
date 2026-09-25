@@ -17,6 +17,7 @@ find_library(XINERAMA_LIB Xinerama REQUIRED)
 find_library(XCOMPOSITE_LIB Xcomposite REQUIRED)
 find_library(XEXT_LIB Xext REQUIRED)
 find_library(GL_LIB GL REQUIRED)
+find_package(PNG REQUIRED)
 find_package(Threads REQUIRED)
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/src/config.h")
@@ -34,9 +35,16 @@ target_link_libraries(sbtb
     ${XRANDR_LIB}
     ${XFT_LIBRARIES}
     ${GL_LIB}
+    PNG::PNG
     Threads::Threads
 )
 target_link_directories(sbtb PRIVATE ${XFT_LIBRARY_DIRS})
 target_compile_options(sbtb PRIVATE ${XFT_CFLAGS_OTHER})
 
+add_custom_command(TARGET sbtb POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/src/dicon.png
+        ${CMAKE_BINARY_DIR}/bin/dicon.png)
+
 install(TARGETS sbtb RUNTIME DESTINATION bin)
+install(FILES src/dicon.png DESTINATION bin)

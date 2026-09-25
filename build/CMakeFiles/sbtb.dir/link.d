@@ -10,6 +10,8 @@ bin/sbtb: \
   /usr/lib/libXrandr.so \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libXft.so \
   /usr/lib/libGL.so \
+  /usr/lib/libpng.so \
+  /usr/lib/libz.so \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc.a \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libgcc_s.so \
   /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libgcc_s.so \
@@ -39,6 +41,8 @@ bin/sbtb: \
   /lib64/libGLdispatch.so.0 \
   /usr/lib32/libGLX.so.0 \
   /lib64/libGLX.so.0 \
+  /usr/lib32/libm.so.6 \
+  /lib64/libm.so.6 \
   /usr/lib64/ld-linux-x86-64.so.2 \
   /usr/lib32/libXau.so.6 \
   /lib64/libXau.so.6 \
@@ -46,14 +50,9 @@ bin/sbtb: \
   /lib64/libXdmcp.so.6 \
   /usr/lib32/libexpat.so.1 \
   /lib64/libexpat.so.1 \
-  /usr/lib32/libz.so.1 \
-  /lib64/libz.so.1 \
   /usr/lib32/libbz2.so.1 \
   /lib64/libbz2.so.1 \
-  /lib64/libpng16.so.16 \
   /lib64/libbrotlidec.so.1 \
-  /usr/lib32/libm.so.6 \
-  /lib64/libm.so.6 \
   /lib64/libbrotlicommon.so.1
 
 /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/Scrt1.o:
@@ -77,6 +76,10 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libXft.so:
 
 /usr/lib/libGL.so:
+
+/usr/lib/libpng.so:
+
+/usr/lib/libz.so:
 
 /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc.a:
 
@@ -136,6 +139,10 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /lib64/libGLX.so.0:
 
+/usr/lib32/libm.so.6:
+
+/lib64/libm.so.6:
+
 /usr/lib64/ld-linux-x86-64.so.2:
 
 /usr/lib32/libXau.so.6:
@@ -150,20 +157,10 @@ CMakeFiles/sbtb.dir/src/sbtb.c.o:
 
 /lib64/libexpat.so.1:
 
-/usr/lib32/libz.so.1:
-
-/lib64/libz.so.1:
-
 /usr/lib32/libbz2.so.1:
 
 /lib64/libbz2.so.1:
 
-/lib64/libpng16.so.16:
-
 /lib64/libbrotlidec.so.1:
-
-/usr/lib32/libm.so.6:
-
-/lib64/libm.so.6:
 
 /lib64/libbrotlicommon.so.1:
